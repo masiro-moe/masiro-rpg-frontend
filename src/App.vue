@@ -1,28 +1,29 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <nav class="nav justify-content-end">
+      <li class="mav-item" v-for="route in routeLinks" :key="route.name">
+        <router-link class="nav-link" :to="route.path || '/'">
+          {{ route.name }}
+        </router-link>
+      </li>
+    </nav>
+    <router-view />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      routeLinks: [],
+    };
+  },
+  created() {
+    this.routeLinks = this.$router.getRoutes();
+    console.log(process.env)
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
