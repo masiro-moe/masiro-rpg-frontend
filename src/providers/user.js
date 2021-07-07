@@ -1,10 +1,17 @@
 import { now } from "core-js-pure/es/date";
-import createCache from "./cache";
 import { refreshToken } from "../api/user";
+import createCache from "../providers/cache";
 
-export default function () {
-  const cache = createCache(sessionStorage);
-
+/**
+ * Create user provider instance
+ *
+ * @param {Object} cache Cache provider
+ * @returns
+ */
+export default function (cache = createCache(
+  localStorage.getItem("keep_login") == "true" ?
+    localStorage : sessionStorage
+)) {
   return {
     /**
      * @var cache Cache provider
@@ -29,6 +36,25 @@ export default function () {
     get info() {
       return this.conf.userInfo;
     },
+    /**
+     * Switch storage of cache provider
+     *
+     * @param {boolean} keepLogin
+     */
+    setCacheProvider(keepLogin) {
+      console.log(keepLogin)
+      this.cache = createCache(
+        keepLogin ?
+          localStorage : sessionStorage
+      );
+      localStorage.setItem("keep_login", keepLogin);
+      this.save();
+    },
+    /**
+     * Determine if user needs to login
+     *
+     * @returns {boolean}
+     */
     requireLogin() {
       let token = this.conf.token,
         time = Math.floor(now() / 1000);
@@ -87,7 +113,7 @@ export default function () {
      * Save to cache.
      */
     async save() {
-      cache.setItem('user_info', this.conf);
+      this.cache.setItem('user_info', this.conf);
     },
     /**
      * Load user data from cache.
@@ -95,7 +121,7 @@ export default function () {
      * @returns {Object} user data
      */
     load() {
-      return cache.getItem('user_info') || {};
+      return this.cache.getItem('user_info') || {};
     },
   }
 }

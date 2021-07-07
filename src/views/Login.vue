@@ -47,9 +47,10 @@
               class="form-check-label"
               aria-describedby="keepLoginHelp"
               for="keepLogin"
-              >自动登录</label
             >
-            <small id="keepLoginHelp" class="form-text text-muted">
+              保持登录
+            </label>
+            <small id="keepLoginHelp" class="form-text text-muted" v-show="keepLogin">
               无操作 3 小时以上自动注销。
             </small>
           </div>
@@ -97,6 +98,9 @@ export default {
 
       validate(this.form.username, this.handleInvalid);
       validate(this.form.password, this.handleInvalid);
+
+      // Switch cache provider
+      this.$user.setCacheProvider(this.keepLogin);
 
       submit(this.form, this.handleInvalid).then(() => {
         // Login succeed
