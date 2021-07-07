@@ -29,6 +29,11 @@ export default function () {
     get info() {
       return this.conf.userInfo;
     },
+    requireLogin() {
+      let token = this.conf.token,
+        time = Math.floor(now() / 1000);
+      return (!token.content || !token.expires || token.expires < time)
+    },
     /**
      * Renew jwt token.
      *

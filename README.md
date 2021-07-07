@@ -1,7 +1,7 @@
 # masiro-rpg-frontend
 
 ## TODOs
-- [ ] dropdown menu for user info
+- [X] dropdown menu for user info
 - [ ] collapse navbar
 
 ## Project setup

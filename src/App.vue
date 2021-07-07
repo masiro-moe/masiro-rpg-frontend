@@ -17,7 +17,15 @@
       </ul>
 
       <!-- Right Side Of Navbar -->
-      <ul class="navbar-nav flex-sm-row flex-column justify-content-end">
+      <ul
+        class="
+          navbar-nav
+          flex-sm-row flex-column
+          align-items-center
+          justify-content-end
+          d-none d-sm-flex
+        "
+      >
         <li
           class="nav-item mx-auto px-2"
           v-for="route in routes"
@@ -41,13 +49,75 @@
           "
         >
           <template v-if="userInfo && userInfo.avatar">
-            <b-avatar
-              variant="info"
-              :src="userInfo.avatar + '?quality=10'"
-            ></b-avatar>
+            <b-nav-item-dropdown right>
+              <template v-slot:button-content>
+                <b-avatar
+                  variant="info"
+                  :src="userInfo.avatar + '?quality=80'"
+                ></b-avatar>
+              </template>
+              <li class="user-avatar d-flex flex-column justify-content-center">
+                <div class="mt-2 mb-3">
+                  <b-avatar
+                    size="90px"
+                    variant="info"
+                    :src="userInfo.avatar + '?quality=80'"
+                  ></b-avatar>
+                </div>
+                <div>
+                  {{ userInfo.name }}
+                  <b-badge pill variant="info">lv{{ userInfo.level }}</b-badge>
+                </div>
+                <small>ID: {{ userInfo.user_id }}</small>
+                <small v-show="requireLogin()" class="mt-1 mb-2 text-danger">
+                  登录过期
+                </small>
+              </li>
+            </b-nav-item-dropdown>
           </template>
           <template v-else></template>
         </li>
+      </ul>
+      <ul class="navbar-nav flex-column d-flex d-sm-none">
+        <li
+          class="nav-item mx-auto px-2"
+          v-for="route in routes"
+          :key="route.name"
+        >
+          <router-link
+            v-show="!(route.name === '登录' && userInfo.avatar)"
+            class="text-sm-center nav-link"
+            :to="route.path || '/'"
+          >
+            {{ route.name }}
+          </router-link>
+        </li>
+        <li class="nav-item mx-auto px-2">
+          <b-button v-b-toggle.collapsed-sm variant="link" class="shadow-none">
+            {{ userInfo.name }}
+          </b-button>
+        </li>
+        <b-collapse id="collapsed-sm" class="my-2">
+          <b-card>
+            <div class="d-flex flex-column align-items-center">
+              <div class="mt-2 mb-3">
+                <b-avatar
+                  size="90px"
+                  variant="info"
+                  :src="userInfo.avatar + '?quality=80'"
+                ></b-avatar>
+              </div>
+              <div>
+                {{ userInfo.name }}
+                <b-badge pill variant="info">lv{{ userInfo.level }}</b-badge>
+              </div>
+              <small>ID: {{ userInfo.user_id }}</small>
+              <small v-show="requireLogin()" class="mt-1 text-danger">
+                登录过期
+              </small>
+            </div>
+          </b-card>
+        </b-collapse>
       </ul>
     </nav>
     <router-view />
@@ -62,12 +132,24 @@ export default {
       userInfo: {},
     };
   },
+  methods: {
+    requireLogin() {
+      return this.$user.requireLogin();
+    },
+  },
   created() {
+    let user = this.$user;
+    this.$router.beforeEach((to, from, next) => {
+      if (to.path === "/login") next();
+      else if (to.path === from.path) next(false);
+      else if (user.requireLogin()) next({ path: "/login" });
+      else next();
+    });
     this.routes = this.$router.getRoutes();
     let self = this;
     this.$user.renew().then((res) => {
       if (!res) {
-        self.$router.push({ name: "登录" });
+        self.$router.push({ path: "/login" });
       }
 
       self.userInfo = self.$user.info;
@@ -81,5 +163,12 @@ body {
   user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
+}
+
+.user-avatar {
+  height: 175px;
+  width: 280px;
+  padding: 10px;
+  text-align: center;
 }
 </style>
