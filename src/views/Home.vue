@@ -1,13 +1,14 @@
 <template>
-  <div class="home">这是一个巨大的 LOGO</div>
+  <div class="mt-4 home d-flex flex-column">
+    <p>这是一个巨大的</p>
+    <p>占位符</p>
+  </div>
 </template>
 
 <script>
 export default {
   name: "Home",
-  created() {
-    
-  }
+  created() {},
 };
 </script>
 

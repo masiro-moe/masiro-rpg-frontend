@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import axios from "axios";
+import qs from 'qs';
 
 // Full config:  https://github.com/axios/axios#request-config
 let config = {
@@ -14,7 +15,9 @@ const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
+    if (config.method === 'post')
+      config.data = qs.stringify(config.data);
+
     return config;
   },
   function (error) {
@@ -35,23 +38,25 @@ _axios.interceptors.response.use(
   }
 );
 
-Plugin.install = function (Vue) {
-  Vue.axios = _axios;
-  window.axios = _axios;
-  Object.defineProperties(Vue.prototype, {
-    axios: {
-      get() {
-        return _axios;
-      }
-    },
-    $axios: {
-      get() {
-        return _axios;
-      }
-    },
-  });
-};
+let AxiosPlugin = {
+  install(Vue) {
+    Vue.axios = _axios;
+    window.axios = _axios;
+    Object.defineProperties(Vue.prototype, {
+      axios: {
+        get() {
+          return _axios;
+        }
+      },
+      $axios: {
+        get() {
+          return _axios;
+        }
+      },
+    });
+  }
+}
 
-Vue.use(Plugin)
+Vue.use(AxiosPlugin)
 
-export default Plugin;
+export default AxiosPlugin;

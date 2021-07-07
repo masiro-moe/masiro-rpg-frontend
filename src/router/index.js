@@ -13,7 +13,12 @@ const routes = [
     path: '/about',
     name: '关于',
     component: () => import('../views/About.vue')
-  }
+  },
+  {
+    path: '/login',
+    name: '登录',
+    component: () => import('../views/Login.vue')
+  },
 ]
 
 const router = new VueRouter({
