@@ -10,7 +10,9 @@
             justify-content-center justify-content-sm-start
           "
         >
-          <a class="navbar-brand mr-0" href="/">MASIRO</a>
+          <a class="navbar-brand mr-0" href="/">
+            {{ $config.VUE_APP_TITLE }}
+          </a>
         </li>
       </ul>
 
@@ -39,7 +41,6 @@
           "
         >
           <template v-if="userInfo && userInfo.avatar">
-            <span class="px-2">{{ userInfo.name }}</span>
             <b-avatar
               variant="info"
               :src="userInfo.avatar + '?quality=10'"
@@ -54,12 +55,11 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
       routes: [],
-      userInfo: {}
+      userInfo: {},
     };
   },
   created() {

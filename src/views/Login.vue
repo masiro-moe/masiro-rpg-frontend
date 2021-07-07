@@ -84,11 +84,9 @@ export default {
     };
   },
   mounted() {
-    console.debug("Login mounted");
     let self = this;
     this.$user.renew().then((res) => {
       if (res) {
-        console.debug("redirect to home");
         self.$nextTick(() => self.$router.push({ path: "/" }));
       }
     });
@@ -105,9 +103,9 @@ export default {
         self.$user.save();
         // prompt success message
         self.$bvToast.toast("登陆成功", {
-          title: "MASIRO RPG",
-          autoHideDelay: 500,
-          appendToast: true,
+          title: self.$config.VUE_APP_TITLE,
+          autoHideDelay: 300,
+          appendToast: false,
         });
 
         // Refresh and redirect to default page defined in 'mounted'
