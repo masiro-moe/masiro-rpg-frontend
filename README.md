@@ -1,5 +1,9 @@
 # masiro-rpg-frontend
 
+## TODOs
+- [ ] dropdown menu for user info
+- [ ] collapse navbar
+
 ## Project setup
 ```
 npm install
@@ -19,6 +23,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
