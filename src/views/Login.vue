@@ -99,23 +99,36 @@ export default {
   },
   methods: {
     submitForm() {
-      let self = this;
+      let self = this,
+        valid = true;
 
-      validate(this.form.username, this.handleInvalid);
-      validate(this.form.password, this.handleInvalid);
+      valid &&= validate(this.form.username, this.handleInvalid);
+      valid &&= validate(this.form.password, this.handleInvalid);
+      if (!valid) return;
 
       // Switch cache provider
       this.$user.setCacheProvider(this.keepLogin);
 
-      submit(this.form, this.handleInvalid).then(() => {
+      submit(this.form, this.handleInvalid).then((res) => {
+        // Login failed
+        if (!res) {
+          // Prompt fail message, detailed error message was handled in submit
+          self.$bvToast.toast("登陆失败", {
+            title: self.$config.VUE_APP_TITLE,
+            autoHideDelay: 300,
+            appendToast: true,
+            variant: "danger",
+          });
+          return;
+        }
         // Login succeed
-        // TODO handle exception
         self.$user.save();
-        // prompt success message
+        // Prompt success message
         self.$bvToast.toast("登陆成功", {
           title: self.$config.VUE_APP_TITLE,
           autoHideDelay: 300,
-          appendToast: false,
+          appendToast: true,
+          variant: "success",
         });
 
         // Refresh and redirect to default page defined in 'mounted'
@@ -156,9 +169,11 @@ export default {
       function validate(model, handleInvalid) {
         if (!model.content) {
           handleInvalid(model, "用户名不能为空！");
-          return;
+          return false;
         }
         model.valid = true;
+
+        return true;
       }
     },
     /**
