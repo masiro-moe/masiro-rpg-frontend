@@ -11,17 +11,11 @@
               class="form-control"
               :class="form.username.valid ? '' : 'is-invalid'"
               id="username"
-              aria-describedby="registerHelp"
               v-model="form.username.content"
             />
             <div class="invalid-feedback" v-show="!form.username.valid">
               {{ form.username.feedback }}
             </div>
-            <small id="registerHelp" class="form-text text-muted">
-              注册请前往<a href="https://masiro.me/admin/auth/login"
-                >真白萌论坛</a
-              >。
-            </small>
           </div>
           <div class="form-group">
             <label for="password">密码</label>
@@ -50,13 +44,24 @@
             >
               保持登录
             </label>
-            <small id="keepLoginHelp" class="form-text text-muted" v-show="keepLogin">
+            <small
+              id="keepLoginHelp"
+              class="form-text text-muted"
+              v-show="keepLogin"
+            >
               无操作 3 小时以上自动注销。
             </small>
           </div>
-          <button type="submit" class="btn btn-primary" @click="submitForm">
-            提交
-          </button>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" @click="submitForm">
+              提交
+            </button>
+            <small class="form-text text-muted">
+              注册请前往
+              <a href="https://masiro.me/admin/auth/login"> 真白萌论坛 </a>。
+            </small>
+          </div>
         </form>
       </div>
     </div>
