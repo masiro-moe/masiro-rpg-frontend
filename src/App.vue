@@ -58,21 +58,7 @@
                 ></b-avatar>
               </template>
               <li class="user-avatar d-flex flex-column justify-content-center">
-                <div class="mt-2 mb-3">
-                  <b-avatar
-                    size="90px"
-                    variant="info"
-                    :src="userInfo.avatar + '?quality=80'"
-                  ></b-avatar>
-                </div>
-                <div>
-                  {{ userInfo.name }}
-                  <b-badge pill variant="info">lv{{ userInfo.level }}</b-badge>
-                </div>
-                <small>ID: {{ userInfo.user_id }}</small>
-                <small v-show="requireLogin()" class="mt-1 mb-2 text-danger">
-                  登录过期
-                </small>
+                <userCard :userInfo="userInfo"></userCard>
               </li>
             </b-nav-item-dropdown>
           </template>
@@ -82,9 +68,14 @@
       <!-- Show on phone -->
       <ul class="navbar-nav flex-column align-items-center d-flex d-sm-none">
         <a href="javascript:;" v-b-toggle.collapsed-sm>
-          <font-awesome-icon :icon="['fas', visible ? 'minus' : 'bars']"></font-awesome-icon>
+          <font-awesome-icon :icon="['fas', visible ? 'minus' : 'bars']">
+          </font-awesome-icon>
         </a>
-        <b-collapse v-model="visible" id="collapsed-sm" class="d-flex flex-column align-items-center flex-fill">
+        <b-collapse
+          v-model="visible"
+          id="collapsed-sm"
+          class="d-flex flex-column align-items-center flex-fill"
+        >
           <li
             class="nav-item mx-auto px-2"
             v-for="route in routes"
@@ -109,23 +100,7 @@
           </li>
           <b-collapse id="collapsed-card" class="my-2">
             <b-card>
-              <div class="user-avatar d-flex flex-column align-items-center">
-                <div class="mt-2 mb-3">
-                  <b-avatar
-                    size="90px"
-                    variant="info"
-                    :src="userInfo.avatar + '?quality=80'"
-                  ></b-avatar>
-                </div>
-                <div>
-                  {{ userInfo.name }}
-                  <b-badge pill variant="info">lv{{ userInfo.level }}</b-badge>
-                </div>
-                <small>ID: {{ userInfo.user_id }}</small>
-                <small v-show="requireLogin()" class="mt-1 text-danger">
-                  登录过期
-                </small>
-              </div>
+              <userCard :userInfo="userInfo"></userCard>
             </b-card>
           </b-collapse>
         </b-collapse>
@@ -136,6 +111,8 @@
 </template>
 
 <script>
+import userCard from "@/components/UserCard.vue";
+
 export default {
   data() {
     return {
@@ -144,11 +121,7 @@ export default {
       visible: false,
     };
   },
-  methods: {
-    requireLogin() {
-      return this.$user.requireLogin();
-    },
-  },
+  components: { userCard },
   created() {
     let user = this.$user;
     this.$router.beforeEach((to, from, next) => {
@@ -177,14 +150,7 @@ body {
   -webkit-user-select: none;
 }
 
-.user-avatar {
-  height: 175px;
-  width: 280px;
-  padding: 10px;
-  text-align: center;
-}
-
 #collapsed-sm.collapsing {
-  display: flex!important;
+  display: flex !important;
 }
 </style>
