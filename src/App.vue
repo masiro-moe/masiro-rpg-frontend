@@ -94,7 +94,7 @@
             <b-button
               v-b-toggle.collapsed-card
               variant="link"
-              class="shadow-none"
+              class="text-decoration-underline shadow-none"
             >
               {{ userInfo.name }}
             </b-button>
@@ -153,5 +153,9 @@ body {
 
 #collapsed-sm.collapsing {
   display: flex !important;
+}
+
+.text-decoration-underline {
+  text-decoration: underline !important;
 }
 </style>
