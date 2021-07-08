@@ -3,10 +3,10 @@ import { refreshToken } from "../api/user";
 import createCache from "../providers/cache";
 
 /**
- * Create user provider instance
+ * Create user provider instance.
  *
  * @param {Object} cache Cache provider
- * @returns
+ * @returns {Object} User provider
  */
 export default function (cache = createCache(
   localStorage.getItem("keep_login") == "true" ?
@@ -37,7 +37,7 @@ export default function (cache = createCache(
       return this.conf.userInfo;
     },
     /**
-     * Switch storage of cache provider
+     * Switch storage of cache provider.
      *
      * @param {boolean} keepLogin
      */
@@ -51,7 +51,7 @@ export default function (cache = createCache(
       this.save();
     },
     /**
-     * Determine if user needs to login
+     * Determine if user needs to login.
      *
      * @returns {boolean}
      */
