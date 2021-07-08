@@ -17,6 +17,7 @@
       </ul>
 
       <!-- Right Side Of Navbar -->
+      <!-- Show on PC -->
       <ul
         class="
           navbar-nav
@@ -78,45 +79,55 @@
           <template v-else></template>
         </li>
       </ul>
-      <ul class="navbar-nav flex-column d-flex d-sm-none">
-        <li
-          class="nav-item mx-auto px-2"
-          v-for="route in routes"
-          :key="route.name"
-        >
-          <router-link
-            v-show="!(route.name === '登录' && userInfo.avatar)"
-            class="text-sm-center nav-link"
-            :to="route.path || '/'"
+      <!-- Show on phone -->
+      <ul class="navbar-nav flex-column align-items-center d-flex d-sm-none">
+        <a href="javascript:;" v-b-toggle.collapsed-sm>
+          <font-awesome-icon :icon="['fas', visible ? 'minus' : 'bars']"></font-awesome-icon>
+        </a>
+        <b-collapse v-model="visible" id="collapsed-sm" class="d-flex flex-column align-items-center flex-fill">
+          <li
+            class="nav-item mx-auto px-2"
+            v-for="route in routes"
+            :key="route.name"
           >
-            {{ route.name }}
-          </router-link>
-        </li>
-        <li class="nav-item mx-auto px-2">
-          <b-button v-b-toggle.collapsed-sm variant="link" class="shadow-none">
-            {{ userInfo.name }}
-          </b-button>
-        </li>
-        <b-collapse id="collapsed-sm" class="my-2">
-          <b-card>
-            <div class="d-flex flex-column align-items-center">
-              <div class="mt-2 mb-3">
-                <b-avatar
-                  size="90px"
-                  variant="info"
-                  :src="userInfo.avatar + '?quality=80'"
-                ></b-avatar>
+            <router-link
+              v-show="!(route.name === '登录' && userInfo.avatar)"
+              class="text-sm-center nav-link"
+              :to="route.path || '/'"
+            >
+              {{ route.name }}
+            </router-link>
+          </li>
+          <li class="nav-item mx-auto px-2">
+            <b-button
+              v-b-toggle.collapsed-card
+              variant="link"
+              class="shadow-none"
+            >
+              {{ userInfo.name }}
+            </b-button>
+          </li>
+          <b-collapse id="collapsed-card" class="my-2">
+            <b-card>
+              <div class="user-avatar d-flex flex-column align-items-center">
+                <div class="mt-2 mb-3">
+                  <b-avatar
+                    size="90px"
+                    variant="info"
+                    :src="userInfo.avatar + '?quality=80'"
+                  ></b-avatar>
+                </div>
+                <div>
+                  {{ userInfo.name }}
+                  <b-badge pill variant="info">lv{{ userInfo.level }}</b-badge>
+                </div>
+                <small>ID: {{ userInfo.user_id }}</small>
+                <small v-show="requireLogin()" class="mt-1 text-danger">
+                  登录过期
+                </small>
               </div>
-              <div>
-                {{ userInfo.name }}
-                <b-badge pill variant="info">lv{{ userInfo.level }}</b-badge>
-              </div>
-              <small>ID: {{ userInfo.user_id }}</small>
-              <small v-show="requireLogin()" class="mt-1 text-danger">
-                登录过期
-              </small>
-            </div>
-          </b-card>
+            </b-card>
+          </b-collapse>
         </b-collapse>
       </ul>
     </nav>
@@ -130,6 +141,7 @@ export default {
     return {
       routes: [],
       userInfo: {},
+      visible: false,
     };
   },
   methods: {
@@ -170,5 +182,9 @@ body {
   width: 280px;
   padding: 10px;
   text-align: center;
+}
+
+#collapsed-sm.collapsing {
+  display: flex!important;
 }
 </style>

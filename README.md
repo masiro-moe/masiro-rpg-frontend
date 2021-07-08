@@ -23,7 +23,7 @@
 
 ## TODOs
 - [X] dropdown menu for user info
-- [ ] collapse navbar
+- [X] collapse navbar
 
 ## 安装
 ```
