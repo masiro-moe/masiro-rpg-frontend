@@ -42,7 +42,6 @@ export default function (cache = createCache(
      * @param {boolean} keepLogin
      */
     setCacheProvider(keepLogin) {
-      console.log(keepLogin)
       this.cache = createCache(
         keepLogin ?
           localStorage : sessionStorage
