@@ -74,7 +74,8 @@
         <b-collapse
           v-model="visible"
           id="collapsed-sm"
-          class="d-flex flex-column align-items-center flex-fill"
+          tag="ul"
+          class="navbar-nav flex-column align-items-center flex-fill"
         >
           <li
             class="nav-item mx-auto px-2"
