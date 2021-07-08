@@ -22,9 +22,16 @@
 - Axios (HTTP 请求)
 
 ## TODOs
-- [X] dropdown menu for user info
-- [X] collapse navbar
-
+### 用户登录系统
+- [X] 登录页面
+- [X] 登录过期自动跳转
+- [X] 保持登录状态
+- [X] 导航栏显示用户信息
+- [X] 登出操作
+### 游戏 UI
+- [ ] 人物
+- [ ] 地图
+- [ ] 事件
 ## 安装
 ```
 npm install
