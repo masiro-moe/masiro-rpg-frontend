@@ -48,6 +48,15 @@ export default function (cache = createCache(
           localStorage : sessionStorage
       );
       localStorage.setItem("keep_login", keepLogin);
+      // TODO handle exception
+      this.save();
+    },
+    /**
+     * Reset user data
+     */
+    reset () {
+      this.conf = { token: {}, userInfo: {} };
+      // TODO handle exception
       this.save();
     },
     /**
@@ -107,13 +116,24 @@ export default function (cache = createCache(
       this.conf.userInfo = data.data;
 
       // Store token and user info
+      // TODO handle exception
       this.save()
     },
     /**
      * Save to cache.
+     *
+     * @returns {Promise} User provider
      */
-    async save() {
-      this.cache.setItem('user_info', this.conf);
+    save() {
+      let self = this;
+      return new Promise((resolve, reject) => {
+        try {
+          self.cache.setItem('user_info', this.conf);
+          resolve(self)
+        } catch (error) {
+          reject(error)
+        }
+      })
     },
     /**
      * Load user data from cache.

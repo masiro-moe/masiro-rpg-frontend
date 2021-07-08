@@ -104,6 +104,7 @@ export default {
 
       submit(this.form, this.handleInvalid).then(() => {
         // Login succeed
+        // TODO handle exception
         self.$user.save();
         // prompt success message
         self.$bvToast.toast("登陆成功", {
